@@ -1,8 +1,8 @@
 import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
 import { ArgumentMetadata } from '@nestjs/common';
-import { User } from '../../domain/user';
+import { User } from '../../domain/user.js';
 import { QueryBus } from '@nestjs/cqrs';
-import { FindUserQuery } from '../../application/query/user-find.query';
+import { FindUserQuery } from '../../application/query/user-find.query.js';
 
 @Injectable()
 export class UserExisted implements PipeTransform<any> {

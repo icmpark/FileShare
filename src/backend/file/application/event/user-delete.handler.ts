@@ -1,8 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { UserDeletedEvent } from '../../../user/domain/event/user-delete.event';
-import { FileFactory } from '../../domain/file.factory';
-import { IFileRepository } from '../../domain/repository/ifile.repository';
+import { UserDeletedEvent } from '../../../user/domain/event/user-delete.event.js';
+import { FileFactory } from '../../domain/file.factory.js';
+import { IFileRepository } from '../../domain/repository/ifile.repository.js';
 
 
 @EventsHandler(UserDeletedEvent)

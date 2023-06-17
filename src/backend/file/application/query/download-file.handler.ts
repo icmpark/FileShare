@@ -1,7 +1,7 @@
 import { Inject, Injectable, StreamableFile } from '@nestjs/common';
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { IFileRepository } from '../../domain/repository/ifile.repository';
-import { DownloadFileQuery } from './download-file.query';
+import { IFileRepository } from '../../domain/repository/ifile.repository.js';
+import { DownloadFileQuery } from './download-file.query.js';
 
 @Injectable()
 @QueryHandler(DownloadFileQuery)

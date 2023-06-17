@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UpdateFileCommand } from './update-file.command';
-import { FileFactory } from '../../domain/file.factory';
+import { UpdateFileCommand } from './update-file.command.js';
+import { FileFactory } from '../../domain/file.factory.js';
 
 @Injectable()
 @CommandHandler(UpdateFileCommand)

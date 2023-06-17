@@ -1,5 +1,5 @@
 import { StreamableFile } from '@nestjs/common';
-import { FileInfo } from '../file';
+import { FileInfo } from '../file.js';
 
 export interface IFileRepository {
     create: (
@@ -34,6 +34,10 @@ export interface IFileRepository {
     ) => Promise<FileInfo[]>;
     download: (
         fileId: string
+    ) => Promise<(StreamableFile | string)[]>;
+    getPreviewFile: (
+        fileId: string,
+        previewId: number,
     ) => Promise<(StreamableFile | string)[]>;
     isUserLike: (
         fileId: string,

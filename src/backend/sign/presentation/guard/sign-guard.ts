@@ -1,8 +1,8 @@
 import { Injectable, SetMetadata } from '@nestjs/common';
 import { CanActivate, ExecutionContext } from '@nestjs/common';
-import { VerifyAuthQuery } from '../../../auth/application/query/verify-auth.query';
+import { VerifyAuthQuery } from '../../../auth/application/query/verify-auth.query.js';
 import { QueryBus } from '@nestjs/cqrs';
-import { TokenPayload } from '../../../auth/domain/token-payload';
+import { TokenPayload } from '../../../auth/domain/token-payload.js';
 
 export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
 

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { AuthModule } from '../auth/auth.module';
-import { UserModule } from '../user/user.module';
-import { LoginCommandHandler } from './application/command/login.handler';
-import { VerifyUserQueryHandler } from './application/query/verify-user.handler';
-import { SignController } from './presentation/sign.controller';
+import { AuthModule } from '../auth/auth.module.js';
+import { UserModule } from '../user/user.module.js';
+import { LoginCommandHandler } from './application/command/login.handler.js';
+import { VerifyUserQueryHandler } from './application/query/verify-user.handler.js';
+import { SignController } from './presentation/sign.controller.js';
 
 
 const commandHandlers = [

@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import authConfig from '../../../config/authConfig';
-import { ITokenAdapter } from '../../domain/adapter/itoken.adapter';
-import { TokenPayload } from '../../domain/token-payload';
-import * as jwt from 'jsonwebtoken';
+import authConfig from '../../../config/authConfig.js';
+import { ITokenAdapter } from '../../domain/adapter/itoken.adapter.js';
+import { TokenPayload } from '../../domain/token-payload.js';
+import jwt from 'jsonwebtoken';
 
 @Injectable()
 export class TokenAdapter implements ITokenAdapter {

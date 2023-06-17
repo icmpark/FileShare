@@ -1,11 +1,13 @@
 import { BadRequestException, Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
-import { LoginAuthDto } from './dto/login-auth.dto';
+import { LoginAuthDto } from './dto/login-auth.dto.js';
 import { Response } from 'express';
-import { SignGuard } from './guard/sign-guard';
-import { Auth } from '../../utils/deco/auth';
+import { SignGuard } from './guard/sign-guard.js';
+import { Auth } from '../../utils/deco/auth.js';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { LoginCommand } from '../application/command/login.command';
-import { CreateTokenCommand } from '../../auth/application/command/create-token.command';
+import { LoginCommand } from '../application/command/login.command.js';
+import { CreateTokenCommand } from '../../auth/application/command/create-token.command.js';
+import { SignTokenGuard } from './guard/sign-token-guard.js';
+import { UserExisted } from '../../user/presentation/pipe/user-existed.pipe.js';
 
 @Controller('sign')
 export class SignController {
@@ -35,9 +37,15 @@ export class SignController {
 
     @UseGuards(SignGuard)
     @Post('/slient_update')
-    async slient_update(@Auth('userId') userId: string): Promise<{[name: string]: string}> {
+    async slient_update(@Auth('userId', UserExisted) userId: string): Promise<{[name: string]: string}> {
         const command = new CreateTokenCommand(userId);
         const accessToken = await this.commandBus.execute(command);
         return {token: accessToken};
+    }
+
+    @UseGuards(SignTokenGuard)
+    @Get('/decode')
+    async decode(@Auth('userId', UserExisted) userId: string): Promise<{[name: string]: string}> {
+        return {userId: userId};
     }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { QueryHandler, IQueryHandler, QueryBus } from '@nestjs/cqrs';
-import { FindUserQuery } from '../../../user/application/query/user-find.query';
-import { User } from '../../../user/domain/user';
-import { VerifyUserQuery } from './verify-user.query';
-import * as bcrypt from 'bcrypt'
+import { FindUserQuery } from '../../../user/application/query/user-find.query.js';
+import { User } from '../../../user/domain/user.js';
+import { VerifyUserQuery } from './verify-user.query.js';
+import bcrypt from 'bcrypt'
 
 @Injectable()
 @QueryHandler(VerifyUserQuery)

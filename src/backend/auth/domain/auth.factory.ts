@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
-import { AuthUpdatedEvent } from './event/auth-update.event';
-import { Auth } from './auth';
-import { IAuthRepository } from './repository/iauth.repository';
+import { AuthUpdatedEvent } from './event/auth-update.event.js';
+import { Auth } from './auth.js';
+import { IAuthRepository } from './repository/iauth.repository.js';
 
 
 @Injectable()

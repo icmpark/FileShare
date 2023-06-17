@@ -1,26 +1,31 @@
 import { Controller, Param, Query, Body, Post, Get, UseGuards, UseInterceptors, Bind, UploadedFiles, Response, StreamableFile, BadRequestException, Inject, Put, Delete, Patch } from '@nestjs/common';
 import { CACHE_MANAGER, CacheKey } from '@nestjs/cache-manager';
-import { Auth } from '../../utils/deco/auth';
-import { CreateFileDto } from './dto/create-file.dto'
-import { fileMulConfig } from '../../config/fileConfig';
+import { Auth } from '../../utils/deco/auth.js';
+import { CreateFileDto } from './dto/create-file.dto.js'
+import { fileMulConfig } from '../../config/fileConfig.js';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { SearchFileDto } from './dto/search-file.dto';
-import { FileGuard, Roles } from './guard/file-guard';
-import { FileExisted } from './pipe/file-existed';
-import { UpdateFileDto } from './dto/update-file.dto';
-import { HttpCacheInterceptor } from '../../utils/intercepter/cache-intercepter';
+import { SearchFileDto } from './dto/search-file.dto.js';
+import { FileGuard, Roles } from './guard/file-guard.js';
+import { FileExisted } from './pipe/file-existed.js';
+import { UpdateFileDto } from './dto/update-file.dto.js';
+import { HttpCacheInterceptor } from '../../utils/intercepter/cache-intercepter.js';
 import { Cache } from 'cache-manager';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateFileCommand } from '../application/command/create-file.command';
-import { FileInfo } from '../domain/file';
-import { SearchFileQuery } from '../application/query/search-file.query';
-import { UpdateFileCommand } from '../application/command/update-file.command';
-import { DeleteFileCommand } from '../application/command/delete-file.command';
-import { DownloadFileQuery } from '../application/query/download-file.query';
-import { CacheResetIntercepter } from '../../utils/intercepter/cache-reset-intercepter';
-import { ParamAuth } from './deco/param-auth';
-import { FileLiked } from './pipe/file-liked';
-import { FindFileQuery } from '../application/query/find-file.query';
+import { CreateFileCommand } from '../application/command/create-file.command.js';
+import { FileInfo } from '../domain/file.js';
+import { SearchFileQuery } from '../application/query/search-file.query.js';
+import { UpdateFileCommand } from '../application/command/update-file.command.js';
+import { DeleteFileCommand } from '../application/command/delete-file.command.js';
+import { DownloadFileQuery } from '../application/query/download-file.query.js';
+import { CacheResetIntercepter } from '../../utils/intercepter/cache-reset-intercepter.js';
+import { ParamAuth } from './deco/param-auth.js';
+import { FileLiked } from './pipe/file-liked.js';
+import { FindFileQuery } from '../application/query/find-file.query.js';
+import { v4 } from 'uuid';
+import { UserExisted } from '../../user/presentation/pipe/user-existed.pipe.js';
+import { ParamPair } from './deco/param-pair.js';
+import { PreviewExisted } from './pipe/preview-existed.js';
+import { GetPreviewFileQuery } from '../application/query/get-preview-file.query.js';
 
 @UseGuards(FileGuard)
 @Controller('files')
@@ -39,14 +44,14 @@ export class FileController {
     @Bind(UploadedFiles())  
     async createFile(
         files: File[],
-        @Auth('userId') userId: string,
+        @Auth('userId', UserExisted) userId: string,
         @Body() dto: CreateFileDto
     ): Promise<{[key: string]: string}> {
         if(files.length == 0)
             throw new BadRequestException({"message": "No files!"});
         const { title, description } = dto;
-        const command = new CreateFileCommand(files, userId, title, description);
-        const fileId = await this.commandBus.execute(command);
+        const fileId = v4();
+        this.commandBus.execute(new CreateFileCommand(files, userId, fileId, title, description));
         return {created: fileId};
     }
 
@@ -135,6 +140,25 @@ export class FileController {
             likes: fileInfo.likes,
             previewPath: fileInfo.previewPath.length,
         };
+    }
+
+    @Roles('userself')
+    @Get('/:fileId/preview/:previewId')
+    async getPreviewFile(
+        @Response({ passthrough: true }) res, 
+        @ParamPair(['fileId', 'previewId'], PreviewExisted) paramPair: [string, number]
+    ): Promise<StreamableFile> {
+        const [fileId, previewId] = paramPair
+        const query = new GetPreviewFileQuery(fileId, previewId);
+        const [file, fileName] = await this.queryBus.execute(query);
+
+        const encodeName = encodeURI(fileName);
+
+        res.set({
+            'Content-Type': 'image/jpeg',
+            'Content-Disposition': "attachment; filename*=utf-8''" + encodeName + '; filename="' + encodeName + '"'
+        });
+        return file
     }
 
     @Roles('userself')

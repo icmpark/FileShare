@@ -1,7 +1,7 @@
 import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
 import { ArgumentMetadata } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { FindFileQuery } from '../../application/query/find-file.query';
+import { FindFileQuery } from '../../application/query/find-file.query.js';
 
 @Injectable()
 export class FileExisted implements PipeTransform<any> {

@@ -1,13 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from '../../../domain/user';
-import { UserFactory } from '../../../domain/user.factory';
-import { IUserRepository } from '../../../domain/repository/iuser.repository';
+import { User } from '../../../domain/user.js';
+import { IUserRepository } from '../../../domain/repository/iuser.repository.js';
 import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongoose';
-import { UserEntity, UserDocument } from '../entity/user.entity';
+import { UserEntity, UserDocument } from '../entity/user.entity.js';
 import { Model } from 'mongoose';
-import * as bcrypt from 'bcrypt'
-import authConfig from '../../../../config/authConfig';
+import bcrypt from 'bcrypt'
+import authConfig from '../../../../config/authConfig.js';
 import { ConfigType } from '@nestjs/config';
 
 

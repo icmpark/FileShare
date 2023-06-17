@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { DeleteFileCommand } from './delete-file.command';
-import { FileFactory } from '../../domain/file.factory';
-import { IFileRepository } from '../../domain/repository/ifile.repository';
+import { DeleteFileCommand } from './delete-file.command.js';
+import { FileFactory } from '../../domain/file.factory.js';
+import { IFileRepository } from '../../domain/repository/ifile.repository.js';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()

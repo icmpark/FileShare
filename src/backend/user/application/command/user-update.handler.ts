@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserFactory } from '../../domain/user.factory';
-import { UpdateUserCommand } from './user-update.command';
+import { UserFactory } from '../../domain/user.factory.js';
+import { UpdateUserCommand } from './user-update.command.js';
 
 @Injectable()
 @CommandHandler(UpdateUserCommand)

@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { FileInfo } from '../../domain/file';
-import { IFileRepository } from '../../domain/repository/ifile.repository';
-import { FindFileQuery } from './find-file.query';
+import { FileInfo } from '../../domain/file.js';
+import { IFileRepository } from '../../domain/repository/ifile.repository.js';
+import { FindFileQuery } from './find-file.query.js';
 
 @Injectable()
 @QueryHandler(FindFileQuery)

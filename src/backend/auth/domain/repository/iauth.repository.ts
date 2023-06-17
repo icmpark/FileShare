@@ -1,4 +1,4 @@
-import { Auth } from '../auth';
+import { Auth } from '../auth.js';
 
 export interface IAuthRepository {
     update: (auth: Auth) => Promise<void>;

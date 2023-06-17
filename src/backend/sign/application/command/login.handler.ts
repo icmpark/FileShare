@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, CommandHandler, ICommandHandler, QueryBus } from '@nestjs/cqrs';
-import { CreateTokenCommand } from '../../../auth/application/command/create-token.command';
-import { UpdateAuthCommand } from '../../../auth/application/command/update-auth.command';
-import { User } from '../../../user/domain/user';
-import { VerifyUserQuery } from '../query/verify-user.query';
-import { LoginCommand } from './login.command';
+import { CreateTokenCommand } from '../../../auth/application/command/create-token.command.js';
+import { UpdateAuthCommand } from '../../../auth/application/command/update-auth.command.js';
+import { User } from '../../../user/domain/user.js';
+import { VerifyUserQuery } from '../query/verify-user.query.js';
+import { LoginCommand } from './login.command.js';
 
 @Injectable()
 @CommandHandler(LoginCommand)

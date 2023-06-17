@@ -1,19 +1,20 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthModule } from '../auth/auth.module';
+import { AuthModule } from '../auth/auth.module.js';
 import { CqrsModule } from '@nestjs/cqrs';
-import { CreateFileCommandHandler } from './application/command/create-file.handler';
-import { DeleteFileCommandHandler } from './application/command/delete-file.handler';
-import { UpdateFileCommandHandler } from './application/command/update-file.handler';
-import { DownloadFileQueryHandler } from './application/query/download-file.handler';
-import { FindFileQueryHandler } from './application/query/find-file.handler';
-import { SearchFileQueryHandler } from './application/query/search-file.handler';
-import { FileUserDeletedEventHandler } from './application/event/user-delete.handler';
-import { FileFactory } from './domain/file.factory';
-import { FileRepository } from './infra/db/repository/file.repository';
-import { FileEntity, FileSchema } from './infra/db/entity/file-entity';
-import { FileController } from './presentation/file.controller';
-import { UserLikeFileQueryHandler } from './application/query/user-like-file.handler';
+import { CreateFileCommandHandler } from './application/command/create-file.handler.js';
+import { DeleteFileCommandHandler } from './application/command/delete-file.handler.js';
+import { UpdateFileCommandHandler } from './application/command/update-file.handler.js';
+import { DownloadFileQueryHandler } from './application/query/download-file.handler.js';
+import { FindFileQueryHandler } from './application/query/find-file.handler.js';
+import { SearchFileQueryHandler } from './application/query/search-file.handler.js';
+import { FileUserDeletedEventHandler } from './application/event/user-delete.handler.js';
+import { FileFactory } from './domain/file.factory.js';
+import { FileRepository } from './infra/db/repository/file.repository.js';
+import { FileEntity, FileSchema } from './infra/db/entity/file-entity.js';
+import { FileController } from './presentation/file.controller.js';
+import { UserLikeFileQueryHandler } from './application/query/user-like-file.handler.js';
+import { GetPreviewFileQueryHandler } from './application/query/get-preview-file.handler.js';
 
 const commandHandlers = [
   CreateFileCommandHandler,
@@ -25,7 +26,8 @@ const queryHandlers = [
   DownloadFileQueryHandler,
   FindFileQueryHandler,
   SearchFileQueryHandler,
-  UserLikeFileQueryHandler
+  UserLikeFileQueryHandler,
+  GetPreviewFileQueryHandler
 ];
 
 const eventHandlers = [

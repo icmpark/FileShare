@@ -2,12 +2,11 @@ import { Request } from 'express';
 import { Injectable, SetMetadata } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CanActivate, ExecutionContext } from '@nestjs/common';
-import { FileEntity } from '../../infra/db/entity/file-entity';
 import { QueryBus } from '@nestjs/cqrs';
-import { ExtractTokenQuery } from '../../../auth/application/query/extract-token.query';
-import { VerifyTokenQuery } from '../../../auth/application/query/verify-token.query';
-import { FindFileQuery } from '../../application/query/find-file.query';
-import { FileInfo } from '../../domain/file';
+import { ExtractTokenQuery } from '../../../auth/application/query/extract-token.query.js';
+import { VerifyTokenQuery } from '../../../auth/application/query/verify-token.query.js';
+import { FindFileQuery } from '../../application/query/find-file.query.js';
+import { FileInfo } from '../../domain/file.js';
 
 export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
 

@@ -1,6 +1,6 @@
 import { IEvent } from '@nestjs/cqrs';
-import { CqrsEvent } from '../../../utils/event/cqrs.event';
-import { Auth } from '../auth';
+import { CqrsEvent } from '../../../utils/event/cqrs.event.js';
+import { Auth } from '../auth.js';
 
 export class AuthUpdatedEvent extends CqrsEvent implements IEvent {
     constructor(

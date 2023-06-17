@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { EventBus } from "@nestjs/cqrs";
-import { FileCreatedEvent } from "./event/file-create.event";
-import { FileUpdatedEvent } from "./event/file-update.event";
-import { FileDeletedEvent } from "./event/file-delete.event";
-import { FileInfo } from "./file";
-import { IFileRepository } from "./repository/ifile.repository";
+import { FileCreatedEvent } from "./event/file-create.event.js";
+import { FileUpdatedEvent } from "./event/file-update.event.js";
+import { FileDeletedEvent } from "./event/file-delete.event.js";
+import { FileInfo } from "./file.js";
+import { IFileRepository } from "./repository/ifile.repository.js";
 
 @Injectable()
 export class FileFactory {

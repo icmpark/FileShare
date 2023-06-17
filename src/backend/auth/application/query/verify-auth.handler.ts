@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { IAuthRepository } from '../../domain/repository/iauth.repository';
-import { VerifyAuthQuery } from './verify-auth.query';
-import { ITokenAdapter } from '../../domain/adapter/itoken.adapter';
-import { TokenPayload } from '../../domain/token-payload';
+import { IAuthRepository } from '../../domain/repository/iauth.repository.js';
+import { VerifyAuthQuery } from './verify-auth.query.js';
+import { ITokenAdapter } from '../../domain/adapter/itoken.adapter.js';
+import { TokenPayload } from '../../domain/token-payload.js';
 
 @Injectable()
 @QueryHandler(VerifyAuthQuery)

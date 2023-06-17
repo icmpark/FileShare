@@ -1,14 +1,14 @@
 import { Body, Controller, Param, Post, Get, UseGuards, Delete, Patch } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserExisted } from './pipe/user-existed.pipe';
-import { UserGuard } from './guard/user-guard';
+import { CreateUserDto } from './dto/create-user.dto.js';
+import { UpdateUserDto } from './dto/update-user.dto.js';
+import { UserExisted } from './pipe/user-existed.pipe.js';
+import { UserGuard } from './guard/user-guard.js';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserCommand } from '../application/command/user-create.command';
-import { DeleteUserCommand } from '../application/command/user-delete.command';
-import { UpdateUserCommand } from '../application/command/user-update.command';
-import { FindUserQuery } from '../application/query/user-find.query';
-import { User } from '../domain/user';
+import { CreateUserCommand } from '../application/command/user-create.command.js';
+import { DeleteUserCommand } from '../application/command/user-delete.command.js';
+import { UpdateUserCommand } from '../application/command/user-update.command.js';
+import { FindUserQuery } from '../application/query/user-find.query.js';
+import { User } from '../domain/user.js';
 
 @Controller('users')
 export class UserController {

@@ -1,4 +1,4 @@
-import { TokenPayload } from "../token-payload";
+import { TokenPayload } from "../token-payload.js";
 
 export interface ITokenAdapter {
     extractFromReq: (request: any) => string;

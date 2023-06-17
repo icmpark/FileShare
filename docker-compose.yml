@@ -43,8 +43,10 @@ services:
     restart: always
     volumes:
       - ./src:/usr/src/app/src
+      - filesharing_previewdata:/usr/src/app/previewPath
       - filesharing_data:/usr/src/app/uploadPath
 volumes:
     mongo_data:
     redis_data:
+    filesharing_previewdata:
     filesharing_data:

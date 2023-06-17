@@ -1,13 +1,13 @@
 import { Inject, StreamableFile } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FileInfo } from '../../../domain/file';
-import * as fs from 'fs';
-import * as archiver from 'archiver';
+import { FileInfo } from '../../../domain/file.js';
+import fs from 'fs';
 import { ConfigType } from '@nestjs/config';
-import { FileEntity, FileDocument } from '../entity/file-entity';
+import { FileEntity, FileDocument } from '../entity/file-entity.js';
 import { Model } from 'mongoose';
-import fileConfig from '../../../../config/fileConfig';
-import { regexEscape } from '../../../../utils/func/regex-escape';
+import fileConfig from '../../../../config/fileConfig.js';
+import { regexEscape } from '../../../../utils/func/regex-escape.js';
+import { saveFile } from '../../procfile/converter.js';
 
 export class FileRepository {
     constructor (
@@ -47,8 +47,10 @@ export class FileRepository {
         const fileEntitys: FileEntity[] = await this.fileModel.find({ fileId: { $in: fileIds }});
         if (fileEntitys.length === 0)
             return;        
-        const filePaths: string[] = fileEntitys.map((fileEntity: FileEntity) => fileEntity.filePath);
-        this.deleteTargetFile(filePaths);
+
+        this.deleteTargetFile(fileEntitys.map((fileEntity: FileEntity) => fileEntity.filePath));
+        fileEntitys.forEach((fileEntity: FileEntity) => this.deletePreviewFile(fileEntity.previewPath));
+
         await this.fileModel.deleteMany({ fileId: { $in: fileIds }});
     }
 
@@ -128,43 +130,29 @@ export class FileRepository {
         return result.modifiedCount > 0;
     }
 
+    private async checkFolder(): Promise<void> {
+        const paths = [
+            this.config.uploadPath,
+            this.config.previewPath,
+            this.config.tmpPath,
+        ]
+        
+        await Promise.all(paths.map(async (path: string): Promise<void> => {
+            try { await fs.promises.access(path, fs.constants.F_OK) }
+            catch { return fs.promises.mkdir(path); }
+        }))
+    }
+
     async save(
         fileId: string,
         title: string,
-        files: File[]
+        files: Express.Multer.File[]
     ): Promise<[string, string, string[]]> {
-        if (!fs.existsSync(this.config.uploadPath))
-            fs.mkdirSync(this.config.uploadPath);
-
-        if (files.length == 1)
-        {
-            const [ file ]: any[] = files;
-            fs.copyFile(file.path, this.config.uploadPath + file.filename, (err) => {
-                fs.unlink(file.path, (err) => {});
-            });
-            return [file.filename, file.originalname, []];
-        }
-        else
-        {
-            let toZ = fs.createWriteStream(this.config.uploadPath + fileId);
-            let fromZ = archiver('zip');
-            
-            for (const { originalname, path } of (files as any))
-                fromZ.append(
-                    fs.createReadStream(path),
-                    { name: originalname }
-                );
-
-            fromZ.pipe(toZ);
-            await fromZ.finalize();
-    
-            for (const { path } of (files as any)) 
-                if(fs.existsSync(path))
-                    fs.unlinkSync(path);
-
-            return [fileId, title + '.zip', []];
-        }
+        await this.checkFolder();
+        return await saveFile(files, this.config, title);
     }
+
+    
     async find(
         fileId: string
     ): Promise<FileInfo> {
@@ -254,6 +242,16 @@ export class FileRepository {
         const {filePath, fileName} = await this.fileModel.findOne({fileId: fileId});
         const file = fs.createReadStream(this.config.uploadPath + filePath);
         return [new StreamableFile(file), fileName];
+
+    }
+
+    async getPreviewFile(
+        fileId: string,
+        previewId: number
+    ): Promise<(StreamableFile | string)[]> {          
+        const { previewPath } = await this.fileModel.findOne({fileId: fileId});
+        const file = fs.createReadStream(this.config.previewPath + previewPath[previewId]);
+        return [new StreamableFile(file), previewId + '.jpg'];
 
     }
 }

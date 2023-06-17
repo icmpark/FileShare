@@ -1,8 +1,8 @@
 import { Injectable, Module } from "@nestjs/common";
 import { Inject } from "@nestjs/common";
-import dbConfig from "./dbConfig";
+import dbConfig from "./dbConfig.js";
 import { ConfigType } from "@nestjs/config";
-import * as redisStore from 'cache-manager-ioredis';
+import redisStore from 'cache-manager-ioredis';
 
 @Injectable()
 export class DBConfigService {

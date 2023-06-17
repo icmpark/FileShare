@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
-import { UserCreatedEvent } from './event/user-create.event';
-import { UserUpdatedEvent } from './event/user-update.event';
-import { UserDeletedEvent } from './event/user-delete.event';
-import { User } from './user';
-import { IUserRepository } from './repository/iuser.repository';
+import { UserCreatedEvent } from './event/user-create.event.js';
+import { UserUpdatedEvent } from './event/user-update.event.js';
+import { UserDeletedEvent } from './event/user-delete.event.js';
+import { User } from './user.js';
+import { IUserRepository } from './repository/iuser.repository.js';
 
 @Injectable()
 export class UserFactory {

@@ -1,8 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { IUserRepository } from '../../domain/repository/iuser.repository';
-import { User } from '../../domain/user';
-import { FindUserQuery } from './user-find.query';
+import { IUserRepository } from '../../domain/repository/iuser.repository.js';
+import { User } from '../../domain/user.js';
+import { FindUserQuery } from './user-find.query.js';
 
 @QueryHandler(FindUserQuery)
 export class FindUserQueryHandler implements IQueryHandler<FindUserQuery> {

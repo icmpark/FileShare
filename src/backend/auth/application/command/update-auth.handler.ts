@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UpdateAuthCommand } from './update-auth.command';
-import authConfig from '../../../config/authConfig';
+import { UpdateAuthCommand } from './update-auth.command.js';
+import authConfig from '../../../config/authConfig.js';
 import { ConfigType } from '@nestjs/config';
-import { AuthFactory } from '../../domain/auth.factory';
-import  { ITokenAdapter } from '../../domain/adapter/itoken.adapter';
-import { TokenPayload } from '../../domain/token-payload';
+import { AuthFactory } from '../../domain/auth.factory.js';
+import  { ITokenAdapter } from '../../domain/adapter/itoken.adapter.js';
+import { TokenPayload } from '../../domain/token-payload.js';
 
 @Injectable()
 @CommandHandler(UpdateAuthCommand)

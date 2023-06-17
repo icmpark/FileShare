@@ -1,6 +1,6 @@
 import { IEvent } from '@nestjs/cqrs';
-import { CqrsEvent } from '../../../utils/event/cqrs.event';
-import { FileInfo } from '../file';
+import { CqrsEvent } from '../../../utils/event/cqrs.event.js';
+import { FileInfo } from '../file.js';
 
 export class FileCreatedEvent extends CqrsEvent implements IEvent {
     constructor(

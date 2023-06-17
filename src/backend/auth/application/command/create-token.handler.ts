@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import authConfig from '../../../config/authConfig';
+import authConfig from '../../../config/authConfig.js';
 import { ConfigType } from '@nestjs/config';
-import  { ITokenAdapter } from '../../domain/adapter/itoken.adapter';
-import { TokenPayload } from '../../domain/token-payload';
-import { CreateTokenCommand } from './create-token.command';
+import  { ITokenAdapter } from '../../domain/adapter/itoken.adapter.js';
+import { TokenPayload } from '../../domain/token-payload.js';
+import { CreateTokenCommand } from './create-token.command.js';
 
 @Injectable()
 @CommandHandler(CreateTokenCommand)

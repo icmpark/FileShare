@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { TokenPayload } from 'src/backend/auth/domain/token-payload';
-import { ExtractTokenQuery } from '../../../auth/application/query/extract-token.query';
-import { VerifyTokenQuery } from '../../../auth/application/query/verify-token.query';
+import { TokenPayload } from 'src/backend/auth/domain/token-payload.js';
+import { ExtractTokenQuery } from '../../../auth/application/query/extract-token.query.js';
+import { VerifyTokenQuery } from '../../../auth/application/query/verify-token.query.js';
 
 @Injectable()
 export class UserGuard implements CanActivate {

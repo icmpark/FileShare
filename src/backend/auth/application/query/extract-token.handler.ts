@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { ITokenAdapter } from '../../domain/adapter/itoken.adapter';
-import { ExtractTokenQuery } from './extract-token.query';
+import { ITokenAdapter } from '../../domain/adapter/itoken.adapter.js';
+import { ExtractTokenQuery } from './extract-token.query.js';
 
 @Injectable()
 @QueryHandler(ExtractTokenQuery)
