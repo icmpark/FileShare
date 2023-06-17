@@ -34,6 +34,7 @@ RUN mkdir -p /usr/src/app
 COPY *.json /usr/src/app/
 WORKDIR /usr/src/app
 RUN mkdir uploadPath
+RUN mkdir previewPath
 RUN yarn global add node-gyp
 RUN yarn install
 COPY *.js /usr/src/app/

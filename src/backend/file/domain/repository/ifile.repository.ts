@@ -13,13 +13,16 @@ export interface IFileRepository {
         title: string,
         description: string,
         fileName: string,
-        filePath: string
+        filePath: string,
+        previewPath: string[],
+        likeUser: string,
+        disLikeUser: string
     ) => Promise<void>;
     save: (
         fileId: string,
         title: string,
         files: File[]
-    ) => Promise<string[]>;
+    ) => Promise<[string, string, string[]]>;
     find: (
         fileId: string
     ) => Promise<FileInfo>;
@@ -32,4 +35,16 @@ export interface IFileRepository {
     download: (
         fileId: string
     ) => Promise<(StreamableFile | string)[]>;
+    isUserLike: (
+        fileId: string,
+        userId: string
+    ) => Promise<boolean>;
+    userLike: (
+        fileId: string,
+        userId: string
+    ) => Promise<boolean>;
+    userDisLike: (
+        fileId: string,
+        userId: string
+    ) => Promise<boolean>;
 }

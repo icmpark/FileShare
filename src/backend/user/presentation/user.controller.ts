@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Get, UseGuards, Delete, Put } from '@nestjs/common';
+import { Body, Controller, Param, Post, Get, UseGuards, Delete, Patch } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserExisted } from './pipe/user-existed.pipe';
@@ -36,7 +36,7 @@ export class UserController {
         this.commandBus.execute(command);
     }
     
-    @Put('/:userId')
+    @Patch('/:userId')
     @UseGuards(UserGuard)
     async updateUser(
         @Param('userId', UserExisted) userId: string,

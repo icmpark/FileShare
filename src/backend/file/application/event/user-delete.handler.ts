@@ -16,10 +16,11 @@ export class FileUserDeletedEventHandler implements IEventHandler<UserDeletedEve
         switch (event.name) {
             case UserDeletedEvent.name: {
                 const { userId } = event as UserDeletedEvent;
-                const files = await this.fileRepository.search(undefined, userId, 0, 0);
+                const files = await this.fileRepository.search(undefined, userId, 0, undefined);
                 const fileIds = files.map((file) => file.fileId);
                 if (fileIds.length != 0)
                     this.fileFactory.delete(fileIds);
+                this.fileRepository.userDisLike(undefined, userId);
                 break;
             }
             default:

@@ -13,6 +13,7 @@ import { FileFactory } from './domain/file.factory';
 import { FileRepository } from './infra/db/repository/file.repository';
 import { FileEntity, FileSchema } from './infra/db/entity/file-entity';
 import { FileController } from './presentation/file.controller';
+import { UserLikeFileQueryHandler } from './application/query/user-like-file.handler';
 
 const commandHandlers = [
   CreateFileCommandHandler,
@@ -23,7 +24,8 @@ const commandHandlers = [
 const queryHandlers = [
   DownloadFileQueryHandler,
   FindFileQueryHandler,
-  SearchFileQueryHandler
+  SearchFileQueryHandler,
+  UserLikeFileQueryHandler
 ];
 
 const eventHandlers = [

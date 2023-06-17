@@ -6,6 +6,8 @@ export class FileInfo {
         readonly title: string,
         readonly description: string,
         readonly fileName: string,
-        readonly filePath: string
+        readonly filePath: string,
+        readonly likes: number,
+        readonly previewPath: string[],
     ) { }
 }

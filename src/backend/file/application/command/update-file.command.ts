@@ -5,6 +5,8 @@ export class UpdateFileCommand implements ICommand {
     readonly fileId: string,
     readonly files: File[],
     readonly title: string,
-    readonly description: string
+    readonly description: string,
+    readonly likeUser: string,
+    readonly disLikeUser: string,
   ) { }
 }

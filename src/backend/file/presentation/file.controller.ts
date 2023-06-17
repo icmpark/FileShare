@@ -1,4 +1,4 @@
-import { Controller, Param, Query, Body, Post, Get, UseGuards, UseInterceptors, Bind, UploadedFiles, Response, StreamableFile, BadRequestException, Inject, Put, Delete } from '@nestjs/common';
+import { Controller, Param, Query, Body, Post, Get, UseGuards, UseInterceptors, Bind, UploadedFiles, Response, StreamableFile, BadRequestException, Inject, Put, Delete, Patch } from '@nestjs/common';
 import { CACHE_MANAGER, CacheKey } from '@nestjs/cache-manager';
 import { Auth } from '../../utils/deco/auth';
 import { CreateFileDto } from './dto/create-file.dto'
@@ -18,6 +18,9 @@ import { UpdateFileCommand } from '../application/command/update-file.command';
 import { DeleteFileCommand } from '../application/command/delete-file.command';
 import { DownloadFileQuery } from '../application/query/download-file.query';
 import { CacheResetIntercepter } from '../../utils/intercepter/cache-reset-intercepter';
+import { ParamAuth } from './deco/param-auth';
+import { FileLiked } from './pipe/file-liked';
+import { FindFileQuery } from '../application/query/find-file.query';
 
 @UseGuards(FileGuard)
 @Controller('files')
@@ -71,19 +74,40 @@ export class FileController {
         });
     }
 
+
     @UseInterceptors(CacheResetIntercepter)
     @CacheKey('FileSearch')
     @Roles('uploader')
     @UseInterceptors(FilesInterceptor('files', null, fileMulConfig))
     @Bind(UploadedFiles())  
-    @Put('/:fileId')
+    @Patch('/:fileId')
     async updateFile(
         files: File[],
         @Param('fileId', FileExisted) fileId: string,
         @Body() dto: UpdateFileDto
     ): Promise<void> {
         const { title, description } = dto
-        const command = new UpdateFileCommand(fileId, files, title, description);
+        const command = new UpdateFileCommand(fileId, files, title, description, undefined, undefined);
+        await this.commandBus.execute(command);
+    }
+
+    @Roles('userself')
+    @Put('/:fileId/like')
+    async userLikeFile(
+        @Param('fileId', FileExisted) fileId: string,
+        @ParamAuth(['fileId', 'nUserId'], FileLiked) userId: string,
+    ): Promise<void> {
+        const command = new UpdateFileCommand(fileId, undefined, undefined, undefined, userId, undefined);
+        await this.commandBus.execute(command);
+    }
+
+    @Roles('userself')
+    @Delete('/:fileId/like')
+    async userDisLikeFile(
+        @Param('fileId', FileExisted) fileId: string,
+        @ParamAuth(['fileId', 'userId'], FileLiked) userId: string,
+    ): Promise<void> {
+        const command = new UpdateFileCommand(fileId, undefined, undefined, undefined, undefined, userId);
         await this.commandBus.execute(command);
     }
 
@@ -97,9 +121,25 @@ export class FileController {
         this.commandBus.execute(new DeleteFileCommand(fileId));
     }
 
+
     @Roles('userself')
     @Get('/:fileId')
     async getFile(
+        @Param('fileId', FileExisted) fileId: string
+    ): Promise<{[key: string]: string | number | string[]}> {
+        const fileInfo: FileInfo = await this.queryBus.execute(new FindFileQuery(fileId));
+        return {
+            uploadUserId: fileInfo.uploadUserId,
+            title: fileInfo.title,
+            description: fileInfo.description,
+            likes: fileInfo.likes,
+            previewPath: fileInfo.previewPath.length,
+        };
+    }
+
+    @Roles('userself')
+    @Get('/:fileId/download')
+    async downloadFile(
         @Response({ passthrough: true }) res, 
         @Param('fileId', FileExisted) fileId: string
     ): Promise<StreamableFile> {

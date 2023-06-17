@@ -12,6 +12,12 @@ export class FileEntity {
     @Prop({type: String, index: true})
     uploadUserId: string;
 
+    @Prop({type: [String], index: true})
+    likeUsers: string[];
+
+    @Prop({type: [String]})
+    previewPath: string[];
+
     @Prop(String)
     title: string;
 

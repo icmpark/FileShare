@@ -6,6 +6,7 @@ const fileSize: number = 1024 * 1024 * 50;
 
 export default registerAs('fileConfig', () => ({
     uploadPath: './uploadPath/',
+    previewPath: './previewPath/',
     fileSize: fileSize
 }));
 

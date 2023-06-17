@@ -20,14 +20,16 @@ export class FileFactory {
         description: string,
         files: File[]
     ): Promise<FileInfo> {
-        const [filePath, fileName] = await this.fileRepository.save(fileId, title, files);
+        const [filePath, fileName, previewPath] = await this.fileRepository.save(fileId, title, files);
         const file = new FileInfo(
             fileId,
             uploadUserId,
             title,
             description,
             fileName,
-            filePath
+            filePath,
+            0,
+            previewPath
         );
         await this.fileRepository.create(file);
         this.eventBus.publish(new FileCreatedEvent(file));
@@ -39,15 +41,25 @@ export class FileFactory {
         fileId: string,
         title: string,
         description: string,
-        fileName: string,
-        filePath: string
-    ): Promise<void> {
+        files: File[],
+        likeUser: string,
+        disLikeUser: string
+    ): Promise<void> { 
+        
+        let [filePath, fileName, previewPath] = [undefined, undefined, []];
+
+        if ((files ?? false) ? files.length != 0 : false)
+            [filePath, fileName, previewPath] = await this.fileRepository.save(fileId, title, files);
+
         await this.fileRepository.update(
             fileId,
             title,
             description,
             fileName,
-            filePath
+            filePath,
+            previewPath,
+            likeUser,
+            disLikeUser
         );
         
         this.eventBus.publish(new FileUpdatedEvent(
@@ -55,7 +67,10 @@ export class FileFactory {
             title,
             description,
             fileName,
-            filePath
+            filePath,
+            previewPath,
+            likeUser,
+            disLikeUser
         ));
     }
 
@@ -70,7 +85,9 @@ export class FileFactory {
         title: string,
         description: string,
         fileName: string,
-        filePath: string
+        filePath: string,
+        likes: number,
+        previewPath: string[]
     ): FileInfo {
 
         const file = new FileInfo(
@@ -79,7 +96,9 @@ export class FileFactory {
             title,
             description,
             fileName,
-            filePath
+            filePath,
+            likes,
+            previewPath
         );
         return file;
     }
