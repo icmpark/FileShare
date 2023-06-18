@@ -9,7 +9,7 @@ export default registerAs('fileConfig', () => ({
     previewPath: './previewPath/',
     tmpPath: './tmpPath/',
     previewWidth: 720,
-    previewHeight: 1280,
+    previewHeight: 960,
     maxPreviews: 10,
     fileSize: fileSize
 }));
