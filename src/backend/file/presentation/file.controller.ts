@@ -26,6 +26,7 @@ import { UserExisted } from '../../user/presentation/pipe/user-existed.pipe.js';
 import { ParamPair } from './deco/param-pair.js';
 import { PreviewExisted } from './pipe/preview-existed.js';
 import { GetPreviewFileQuery } from '../application/query/get-preview-file.query.js';
+import { UserLikeFileQuery } from '../application/query/user-like-file.query.js';
 
 @UseGuards(FileGuard)
 @Controller('files')
@@ -94,6 +95,16 @@ export class FileController {
         const { title, description } = dto
         const command = new UpdateFileCommand(fileId, files, title, description, undefined, undefined);
         await this.commandBus.execute(command);
+    }
+
+    @Roles('userself')
+    @Get('/:fileId/like')
+    async isUserLikeFile(
+        @Param('fileId', FileExisted) fileId: string,
+        @Auth('userId') userId: string,
+    ): Promise<{[key: string]: boolean}> {
+        const query = new UserLikeFileQuery(fileId, userId);
+        return {'result': await this.queryBus.execute(query)};
     }
 
     @Roles('userself')

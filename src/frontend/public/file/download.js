@@ -9,6 +9,7 @@ Vue.createApp({
             description: 'Loading...',
             likes: 0,
             previews: 0,
+            userLike: false,
         }
     },
     async mounted () {
@@ -22,13 +23,29 @@ Vue.createApp({
             'GET'
         )
         
-        const body = await res.json();
+        if(res.status == 200)
+        {
+            const body = await res.json();
+            this.uploadUserId = body.uploadUserId;
+            this.title = body.title;
+            this.description = body.description;
+            this.likes = body.likes;
+            this.previews = body.previews;
+        }
 
-        this.uploadUserId = body.uploadUserId;
-        this.title = body.title;
-        this.description = body.description;
-        this.likes = body.likes;
-        this.previews = body.previews;
+
+        const userLikes = await this.authRequest(
+            `/v/files/${this.fileId}/like`,
+            'GET'
+        )
+        
+        if(userLikes.status == 200)
+        {
+            const userLikesBody = await res.json();
+            this.userLikes = userLikesBody.result;
+        }
+
+
 
         let invaildBrowser = ['everytimeApp', 'KakaoTalk', 'KAKAOTALK', 'NAVER'];
         let userAgent = navigator.userAgent;
@@ -73,7 +90,7 @@ Vue.createApp({
                 body: body                
             });
 
-            if (res.status == 400)
+            if (res.status == 403)
                 await this.recoverToken();
             else
                 return res;
@@ -95,6 +112,28 @@ Vue.createApp({
             )
             const body = await result.json();
             this.userId = body.userId;
+        },
+        async userLikeFile() {
+            if (this.userLike)
+            {
+                const result = await this.authRequest(
+                    `/v/files/${this.fileId}/like`,
+                    'DELETE',
+                )
+                if (result.status == 201)
+                    this.likes -= 1;
+                this.userLike = false;
+            }
+            else
+            {
+                const result = await this.authRequest(
+                    `/v/files/${this.fileId}/like`,
+                    'PUT'
+                )
+                if (result.status == 201)
+                    this.likes += 1;
+                this.userLike = true;
+            }
         },
     }
 }).mount('#container');

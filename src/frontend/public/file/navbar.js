@@ -40,7 +40,7 @@ Vue.createApp({
                 body: body                
             });
 
-            if (res.status == 400)
+            if (res.status == 403)
                 await this.recoverToken();
             else
                 return res;

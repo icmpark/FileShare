@@ -65,7 +65,7 @@ Vue.createApp({
                 body: body                
             });
 
-            if (res.status == 400)
+            if (res.status == 403)
                 await this.recoverToken();
             else
                 return res;
@@ -87,7 +87,6 @@ Vue.createApp({
             )
             const body = await result.json();
             this.userId = body.userId;
-            console.log(this.userId);
         },
         tableRefresh: async function(num) {
             let parsedQuery = this.parseQuery();
