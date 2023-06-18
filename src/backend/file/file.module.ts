@@ -15,6 +15,7 @@ import { FileEntity, FileSchema } from './infra/db/entity/file-entity.js';
 import { FileController } from './presentation/file.controller.js';
 import { UserLikeFileQueryHandler } from './application/query/user-like-file.handler.js';
 import { GetPreviewFileQueryHandler } from './application/query/get-preview-file.handler.js';
+import { SearchFileByTitleQueryHandler } from './application/query/searchby-title.handler.js';
 
 const commandHandlers = [
   CreateFileCommandHandler,
@@ -27,7 +28,8 @@ const queryHandlers = [
   FindFileQueryHandler,
   SearchFileQueryHandler,
   UserLikeFileQueryHandler,
-  GetPreviewFileQueryHandler
+  GetPreviewFileQueryHandler,
+  SearchFileByTitleQueryHandler
 ];
 
 const eventHandlers = [

@@ -109,7 +109,7 @@ Vue.createApp({
             ghostElem.href = url;
             ghostElem.click();
            
-            window.URL.revokeObjectUrl(url);
+            window.URL.revokeObjectURL(url);
         },
         getPreviewImage(num) {
             return this.images[num];
