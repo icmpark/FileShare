@@ -187,52 +187,63 @@ export class FileRepository {
             result.previewPath
         );
     }
+
     async search(
         title: string,
         userId: string,
-        offset:number,
-        limit: number
+        offset: number,
+        limit: number,
     ): Promise<FileInfo[]> {
-
         const query: {[name: string]: any} = {};
         
         if (userId != undefined)
             query['uploadUserId'] = userId;
 
-        if (title != undefined)
+        if (title != undefined && title != '')
             query['title'] = { $regex: regexEscape(title) };
         
-        let aggregateQuery = this.fileModel
-            .aggregate()
-            .match(query)
-            .project({
-                fileId: 1,
-                uploadUserId: 1,
-                title: 1,
-                description: 1,
-                fileName: 1,
-                filePath: 1,      
-                previewPath: 1,    
-                titleLen: { $strLenCP: '$title' }
-            })
-            .sort({titleLen: 1, title: 1})
-            .project({titleLen: 0, likeUsers: 0})
-            .skip(offset);
-
-        if (limit != undefined)
-            aggregateQuery = aggregateQuery.limit(limit);
+        let fileDocuments: FileDocument[] = await this.fileModel.find(
+                query, 
+                {
+                    _id: 1,
+                    fileId: 1,
+                    uploadUserId: 1,
+                    title: 1,
+                    description: 1,
+                }
+            ).sort({ _id: -1}).skip(offset).limit(limit);
             
-        return (await aggregateQuery).map((value: {[key: string]: any}): FileInfo => {
+        return fileDocuments.map((value: {[key: string]: any}): FileInfo => {
             return new FileInfo(
                 value.fileId,
                 value.uploadUserId,
                 value.title,
                 value.description,
-                value.fileName,
-                value.filePath,
-                value.likes,
-                value.previewPath
+                undefined,
+                undefined,
+                undefined,
+                undefined
             );
+        });
+    }
+
+    async searchByTitle(
+        title: string,
+        offset: number,
+        limit: number,
+    ): Promise<string[]> {
+        let aggregateQuery = await this.fileModel
+            .aggregate()
+            .match({'title': { $regex: '^' + regexEscape(title) }})
+            .group({ _id: '$title' })
+            .project({ "_id": 1, "len": { $strLenCP: "$_id" } })
+            .sort({ len: 1, _id: 1})
+            .project({len: 0})
+            .skip(offset)
+            .limit(limit);
+            
+        return aggregateQuery.map((value: {[key: string]: any}): string => {
+            return value._id;
         });
     }
 

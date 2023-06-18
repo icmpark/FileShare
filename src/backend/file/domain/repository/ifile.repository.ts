@@ -32,6 +32,11 @@ export interface IFileRepository {
         offset:number,
         limit: number
     ) => Promise<FileInfo[]>;
+    searchByTitle: (
+        title: string,
+        offset:number,
+        limit: number
+    ) => Promise<string[]>;
     download: (
         fileId: string
     ) => Promise<(StreamableFile | string)[]>;

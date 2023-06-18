@@ -26,6 +26,8 @@ import { UserExisted } from '../../user/presentation/pipe/user-existed.pipe.js';
 import { ParamPair } from './deco/param-pair.js';
 import { PreviewExisted } from './pipe/preview-existed.js';
 import { GetPreviewFileQuery } from '../application/query/get-preview-file.query.js';
+import { UserLikeFileQuery } from '../application/query/user-like-file.query.js';
+import { SearchFileByTitleQuery } from '../application/query/searchby-title.query.js';
 
 @UseGuards(FileGuard)
 @Controller('files')
@@ -55,8 +57,6 @@ export class FileController {
         return {created: fileId};
     }
 
-    @UseInterceptors(HttpCacheInterceptor)
-    @CacheKey('FileSearch')
     @Roles('userself')
     @Get('/')
     async searchFile(
@@ -79,6 +79,21 @@ export class FileController {
         });
     }
 
+    @UseInterceptors(HttpCacheInterceptor)
+    @CacheKey('FileSearch')
+    @Roles('userself')
+    @Get('/title')
+    async searchByFileName(
+        @Query() dto: SearchFileDto
+    ): Promise<string[]> {
+
+        const {title, offset, limit} = dto;
+        return await this.queryBus.execute(new SearchFileByTitleQuery(
+            title,
+            offset,
+            limit
+        ));
+    }
 
     @UseInterceptors(CacheResetIntercepter)
     @CacheKey('FileSearch')
@@ -94,6 +109,16 @@ export class FileController {
         const { title, description } = dto
         const command = new UpdateFileCommand(fileId, files, title, description, undefined, undefined);
         await this.commandBus.execute(command);
+    }
+
+    @Roles('userself')
+    @Get('/:fileId/like')
+    async isUserLikeFile(
+        @Param('fileId', FileExisted) fileId: string,
+        @Auth('userId') userId: string,
+    ): Promise<{[key: string]: boolean}> {
+        const query = new UserLikeFileQuery(fileId, userId);
+        return {'result': await this.queryBus.execute(query)};
     }
 
     @Roles('userself')
@@ -135,10 +160,11 @@ export class FileController {
         const fileInfo: FileInfo = await this.queryBus.execute(new FindFileQuery(fileId));
         return {
             uploadUserId: fileInfo.uploadUserId,
+            fileName: fileInfo.fileName,
             title: fileInfo.title,
             description: fileInfo.description,
             likes: fileInfo.likes,
-            previewPath: fileInfo.previewPath.length,
+            previews: fileInfo.previewPath.length,
         };
     }
 
