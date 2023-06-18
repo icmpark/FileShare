@@ -138,7 +138,7 @@ export class FileController {
             title: fileInfo.title,
             description: fileInfo.description,
             likes: fileInfo.likes,
-            previewPath: fileInfo.previewPath.length,
+            previews: fileInfo.previewPath.length,
         };
     }
 

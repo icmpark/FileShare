@@ -191,7 +191,7 @@ export class FileRepository {
         title: string,
         userId: string,
         offset:number,
-        limit: number
+        limit: number,
     ): Promise<FileInfo[]> {
 
         const query: {[name: string]: any} = {};
@@ -199,7 +199,7 @@ export class FileRepository {
         if (userId != undefined)
             query['uploadUserId'] = userId;
 
-        if (title != undefined)
+        if (title != undefined && title != '')
             query['title'] = { $regex: regexEscape(title) };
         
         let aggregateQuery = this.fileModel
@@ -214,9 +214,14 @@ export class FileRepository {
                 filePath: 1,      
                 previewPath: 1,    
                 titleLen: { $strLenCP: '$title' }
-            })
-            .sort({titleLen: 1, title: 1})
-            .project({titleLen: 0, likeUsers: 0})
+            });
+        
+        if (title != undefined && title != '')
+            aggregateQuery = aggregateQuery.sort({titleLen: 1, title: 1})
+        else
+            aggregateQuery = aggregateQuery.sort({_id: -1})
+        
+        aggregateQuery = aggregateQuery.project({titleLen: 0, likeUsers: 0})
             .skip(offset);
 
         if (limit != undefined)

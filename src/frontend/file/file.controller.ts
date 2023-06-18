@@ -8,13 +8,13 @@ export class FileRenderController {
   login() {
   }
 
-  @Get('/user-manage')
-  @Render('file/userinfo')
-  userinfo() {
+  @Get('/upload')
+  @Render('file/upload')
+  upload() {
   }
 
-  @Get('/file-manage')
-  @Render('file/scheinfo')
-  fileinfo() {
+  @Get('/download')
+  @Render('file/download')
+  download() {
   }
 }

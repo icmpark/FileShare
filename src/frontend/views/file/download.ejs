@@ -1,0 +1,41 @@
+<%- include ("../general/header") %>
+<%- include ("./navbar") %>
+<link rel="stylesheet" href="/assets/file/download.css">
+
+<div id="container" class="container docContent">
+  <div class="docInfo">
+        <div class="fileInfo" v-text="title" style="font-size: 1.65rem">
+        </div>
+        <div class="fileInfo" v-text="description" style="font-size: .9rem">
+        </div>
+        <div class="floatUsed">
+          <button id="downBtn" class="floatUsed btn btn-primary">다운로드</button>
+          <button v-if="uploadUserId == userId" id="delBtn" class="floatUsed btn btn-danger">삭제</button>
+        </div>
+        <hr>
+        <div id="previewDiv" v-show="previews != 0" style="margin:auto; width:100%">
+          <div id="previewSlider" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                  <div v-for="idx in previews" :class="(idx === 1) ? 'carousel-item active' : 'carousel-item'">
+                      <img class="d-block w-100" v-bind:src="'/download-preview/'+ fileId + '-' + (idx - 1)">
+                  </div>
+              </div>
+              <a class="carousel-control-prev" href="#previewSlider" role="button" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">이전</span>
+              </a>
+              <a class="carousel-control-next" href="#previewSlider" role="button" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">다음</span>
+              </a>
+          </div>
+        </div>
+        <hr>
+  </div>
+</div>
+
+<%- include ('./file-footer') %>
+<%- include ('../general/script') %>
+<script src="/assets/file/download.js"></script>
+<script src="/assets/file/navbar.js"></script>
+<%- include ('../general/footer') %>
