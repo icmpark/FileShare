@@ -5,14 +5,13 @@
 1. Github 리포지토리 clone
 
 ```
-git clone https://github.com/ecmpark/FileShare-B
-cd FileShare-B
+git clone https://github.com/ecmpark/FileShare-N
+cd FileShare-N
 ```
 
 2. 도커 빌드
 
 ```
-docker build -t filesharing .
 docker-compose up
 ```
 
