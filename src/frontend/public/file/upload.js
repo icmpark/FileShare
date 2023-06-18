@@ -111,7 +111,6 @@ Vue.createApp({
             this.fileInput.disabled = true;
 
             let client = new XMLHttpRequest();
-            client.setRequestHeader('Authorization', `Bearer ${token}`);
 
             let fLength = this.fileInput.files.length;
             let formData = new FormData();
@@ -120,7 +119,7 @@ Vue.createApp({
                 return;
 
             for (let i = 0; i < fLength; ++i)
-                formData.append('file[]', this.fileInput.files[i]);
+                formData.append('files', this.fileInput.files[i]);
 
             formData.append('title', this.fileTitle.value);
             formData.append('description', this.fileValue.value);
@@ -135,7 +134,7 @@ Vue.createApp({
             client.onload = (e) => {
                 let res = JSON.parse(client.responseText);
                 this.setProgBar(100);
-                if (res['status'])
+                if (res['created'])
                     alert('업로드 성공');
                 else
                     alert('업로드 실패');
@@ -155,6 +154,7 @@ Vue.createApp({
             };
 
             client.open('POST', '/v/files/upload');
+            client.setRequestHeader('Authorization', `Bearer ${token}`);
             client.send(formData);
             this.fileTitle.value = '';
             this.fileValue.value = '';

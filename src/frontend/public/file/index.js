@@ -119,7 +119,16 @@ Vue.createApp({
 
             const url = `/v/files?title=${query}&offset=${startNum}&limit=10`;
 
-            const res = await this.authRequest(url, 'GET', {}, undefined);
+            const res = await this.authRequest(
+                url,
+                'GET', 
+                {
+                    'Cache-Control': 'no-store',
+                    Pragma: 'no-store',
+                    Expires: '0'
+                }, 
+                undefined
+            );
 
             const resBody = await res.json();
             
@@ -131,6 +140,7 @@ Vue.createApp({
 
             this.items = resBody.map((r) => {
                 return {
+                    id: r.fileId,
                     title: r.title,
                     value: r.description,
                 }
@@ -232,7 +242,7 @@ Vue.createApp({
             } else {
                 this.auto.isSearched = true;
                 this.auto.value = query;
-                this.auto.values = resBody.map(x => x.substr(query.length));
+                this.auto.values = resBody.map(x => x.title.substr(query.length));
             }
             this.turnOnAuto();
         },

@@ -146,6 +146,7 @@ export class FileController {
         const fileInfo: FileInfo = await this.queryBus.execute(new FindFileQuery(fileId));
         return {
             uploadUserId: fileInfo.uploadUserId,
+            fileName: fileInfo.fileName,
             title: fileInfo.title,
             description: fileInfo.description,
             likes: fileInfo.likes,

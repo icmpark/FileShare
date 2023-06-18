@@ -17,6 +17,9 @@ export default registerAs('fileConfig', () => ({
 export const fileMulConfig = {
     storage: diskStorage({
       filename: (request, file, callback) => {
+        file.originalname = Buffer.from(file.originalname, 'latin1').toString(
+          'utf8',
+        );
         callback(null, uuid());
       },
     }),
