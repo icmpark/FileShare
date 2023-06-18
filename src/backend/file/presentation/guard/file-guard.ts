@@ -7,6 +7,8 @@ import { ExtractTokenQuery } from '../../../auth/application/query/extract-token
 import { VerifyTokenQuery } from '../../../auth/application/query/verify-token.query.js';
 import { FindFileQuery } from '../../application/query/find-file.query.js';
 import { FileInfo } from '../../domain/file.js';
+import { FindUserQuery } from '../../../user/application/query/user-find.query.js';
+import { User } from '../../../user/domain/user.js';
 
 export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
 
@@ -37,18 +39,26 @@ export class FileGuard implements CanActivate {
         const roles = this.reflector.get<string[]>('roles', handler);
         const fildId = request.params.fileId;
 
-        let fileEntity: FileInfo | null = null;
+        let userInfo: User = null;
+
+        if (authUserId != undefined && typeof authUserId == 'string')
+            userInfo = await this.queryBus.execute(new FindUserQuery(authUserId));
     
-        if (fildId != undefined && typeof fildId == 'string')
-            fileEntity = await this.queryBus.execute(new FindFileQuery(fildId));
-    
+        if (!userInfo)
+            return false;
+
         request.auth = {userId: authUserId, nUserId: authUserId};
         
         const results = await Promise.all(roles.map(async (value) => {
             if (value == 'uploader')
-                return fileEntity != null && fileEntity.uploadUserId == authUserId;
+            {        
+                let fileInfo: FileInfo = null;
+                if (fildId != undefined && typeof fildId == 'string')
+                    fileInfo = await this.queryBus.execute(new FindFileQuery(fildId));
+                return fileInfo != null && fileInfo.uploadUserId == authUserId;
+            }
             else if (value == 'userself')
-                return authUserId != null;
+                return true;
             else
                 return false;
         }));
