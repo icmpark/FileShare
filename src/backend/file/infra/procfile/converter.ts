@@ -141,7 +141,6 @@ async function multiFileHandler(files: EFile[], config: FConfig, title: string):
         const promise = (async () => {
             let needPreview = promises.length < config.maxPreviews;
             let fileEx = (await fileTypeFromFile(path))?.ext;
-
             fromZ.append(
                 fs.createReadStream(path),
                 { name: originalname }

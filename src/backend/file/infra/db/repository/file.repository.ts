@@ -199,7 +199,7 @@ export class FileRepository {
         if (userId != undefined)
             query['uploadUserId'] = userId;
 
-        if (title != undefined && title != '')
+        if (title != undefined)
             query['title'] = { $regex: regexEscape(title) };
         
         let fileDocuments: FileDocument[] = await this.fileModel.find(
