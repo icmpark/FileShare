@@ -5,14 +5,20 @@
 <div id="container" class="container docContent">
   <div class="docInnerContent">
     <div class="form-group" style="margin-top: 5px;">
-        <div class="input-group"> 
-             <input type="text" id="searchVal" placeholder="내용" class="form-control" v-on:keyup="searchTyped">
-             <div id="autocomplete" class="dropdown-menu">
-		 <a href="#" class="dropdown-item"  v-for="(lecture, index) in auto.values" v-on:click="autoClicked" v-bind:class="{ 'disabled': !auto.isSearched, 'active': index == auto.focus }">
-		     <b v-text="auto.value"></b><span v-text="lecture"></span>
-		 </a>
-	     </div>     
-             <button type="button" class="btn btn-outline-success" style="width: 80px" @click="TableRefresh(1)">검색</button>
+        <div class="dropdown">
+            <div class="input-group"> 
+                <input type="text" id="searchVal" placeholder="내용" class="form-control" v-on:keyup="searchTyped">
+                <button type="button" class="btn btn-outline-success" style="width: 80px" @click="TableRefresh(1)">검색</button>
+           </div>
+           <ul id="autocomplete" class="dropdown-menu">
+              <li href="#" 
+                  class="dropdown-item" 
+                  v-for="(lecture, index) in auto.values"
+                  v-on:click="autoClicked"
+                  v-bind:class="{ 'disabled': !auto.isSearched, 'active': index == auto.focus }">
+                  <b v-text="auto.value"></b><span v-text="lecture"></span>
+              </li>
+           </ul>
         </div>
      </div>
     <hr>
@@ -24,13 +30,15 @@
         </div>
     </div>
     <div style="padding-top:10px; margin-bottom:20px" align="right">
-        <button type="button" class="btn btn-danger" @click="TableRefresh(2)">이전</button>
-        <button type="button" class="btn btn-primary" @click="TableRefresh(3)">다음</button>
+        <button type="button" class="btn btn-danger" style="margin-right: 0.2rem;" @click="tableRefresh(2)">이전</button>
+        <button type="button" class="btn btn-primary" @click="tableRefresh(3)">다음</button>
     </div>
   </div>
 </div>
 
 
+<%- include ('./file-footer') %>
 <%- include ('../general/script') %>
 <script src="/assets/file/index.js"></script>
+<script src="/assets/file/navbar.js"></script>
 <%- include ('../general/footer') %>

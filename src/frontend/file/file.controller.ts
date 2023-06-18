@@ -1,4 +1,4 @@
-import { Controller, Get, Render, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Render } from '@nestjs/common';
 
 @Controller()
 export class FileRenderController {
@@ -8,13 +8,13 @@ export class FileRenderController {
   login() {
   }
 
-  @Get('/user-manage')
-  @Render('file/userinfo')
-  userinfo() {
+  @Get('/upload')
+  @Render('file/upload')
+  upload() {
   }
 
-  @Get('/file-manage')
-  @Render('file/scheinfo')
-  fileinfo() {
+  @Get('/download/:fileId')
+  @Render('file/download')
+  download() {
   }
 }

@@ -1,0 +1,103 @@
+.docContent {
+  max-width: 720px;
+  margin: 1rem auto 2rem auto;
+  padding: 0 .75rem;
+}
+
+.docInfo {
+  padding: 25px;
+  background-color: var( --body-color );
+  border: 1px solid var( --bd-color );
+  border-radius: .4rem;
+}
+
+.fileInfo {
+  color: var( --txt-color );
+  word-wrap: break-word;
+  padding-top: 5px;
+}
+
+.card {
+  margin: 15px;
+  position: relative;
+}
+
+.card-header {
+  padding: .5rem 0.75rem;
+}
+
+.card-body {
+  padding: .5rem 0.75rem;
+}
+
+.card>.card-header:after, .card>.card-header:before {
+  position: absolute;
+  top: 11px;
+  left: -16px;
+  right: 100%;
+  width: 0;
+  height: 0;
+  display: block;
+  content: " ";
+  border-color: transparent;
+  border-style: solid solid outset;
+  pointer-events: none;
+}
+
+.card>.card-header:after {
+  border-width: 7px;
+  border-right-color: #f7f7f7;
+  margin-top: 1px;
+  margin-left: 2px;
+}
+
+.card>.card-header:before {
+  border-right-color: #ddd;
+  border-width: 8px;
+}
+
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  background-color: var( --input-bg-color );
+  border-color: var( --bd-color );
+  color: var( --txt-color );
+}
+
+.card-body {
+  background-color: var( --input-bg-color );
+  border-color: var( --bd-color );
+  color: var( --input-color );
+
+}
+
+.card-header {
+  background-color: var( --head-bg-color );
+  border-color: var( --bd-color );
+  color: var( --head-color );
+
+}
+
+.delComment {
+  float: right;
+  text-decoration: none;
+}
+
+
+.floatBtn {
+  font-size: 18px;
+  margin-top: 25px;
+  margin-right: 5px;
+  float: right;
+}
+
+#downBtn {
+  font-size: 18px;
+  margin-top: 25px;
+  float: right;
+}
+
+.floatUsed:after {
+  content: "";
+  display: block;
+  clear: both;
+}
