@@ -1,5 +1,5 @@
 #!/bin/sh
 unoserver > /dev/null &
-yarn nest start
+yarn start
 # Exit with status of process that exited first
 exit $?

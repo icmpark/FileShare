@@ -37,6 +37,7 @@ RUN mkdir uploadPath
 RUN mkdir previewPath
 RUN yarn global add node-gyp
 RUN yarn install
+RUN yarn upgrade
 COPY *.js /usr/src/app/
 COPY *.sh /usr/src/app/
 ENTRYPOINT [ "/bin/sh", "./execute.sh"]
