@@ -1,0 +1,36 @@
+<%- include ("../general/header") %>
+<%- include ("./navbar") %>
+<link rel="stylesheet" href="/assets/file/index.css">
+
+<div id="container" class="container docContent">
+  <div class="docInnerContent">
+    <div class="form-group" style="margin-top: 5px;">
+        <div class="input-group"> 
+             <input type="text" id="searchVal" placeholder="내용" class="form-control" v-on:keyup="searchTyped">
+             <div id="autocomplete" class="dropdown-menu">
+		 <a href="#" class="dropdown-item"  v-for="(lecture, index) in auto.values" v-on:click="autoClicked" v-bind:class="{ 'disabled': !auto.isSearched, 'active': index == auto.focus }">
+		     <b v-text="auto.value"></b><span v-text="lecture"></span>
+		 </a>
+	     </div>     
+             <button type="button" class="btn btn-outline-success" style="width: 80px" @click="TableRefresh(1)">검색</button>
+        </div>
+     </div>
+    <hr>
+    <div class="docList" @click="moveDown(item.id)" v-for="item in items">
+        <div class="docInfo" v-text="item.title">
+        </div>
+        <div class="docCategory"
+            v-text="(item.value.length < 40) ? item.value : item.value.substr(0, 37) + '...'">
+        </div>
+    </div>
+    <div style="padding-top:10px; margin-bottom:20px" align="right">
+        <button type="button" class="btn btn-danger" @click="TableRefresh(2)">이전</button>
+        <button type="button" class="btn btn-primary" @click="TableRefresh(3)">다음</button>
+    </div>
+  </div>
+</div>
+
+
+<%- include ('../general/script') %>
+<script src="/assets/file/index.js"></script>
+<%- include ('../general/footer') %>

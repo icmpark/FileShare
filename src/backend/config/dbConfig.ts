@@ -8,12 +8,12 @@ export default registerAs('database', () => ({
       user: 'mguser',
       pass: 'mgpass',
     },
-    addr: 'mongo',
+    addr: 'localhost',
     port: '27017',
     name: 'filesharing'
   },
   redis: {
-    addr: 'redis',
+    addr: 'localhost',
     port: '6379',
     TTL: 60 * 60
   }

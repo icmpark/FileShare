@@ -1,0 +1,37 @@
+<%- include ('../general/header') %>
+
+<div id="myApp" class="container py-3">
+  <%- include ('navbar') -%>
+  <link rel="stylesheet" href="/assets/file/userinfo.css">
+  <main>
+    <div id="editdiv" class="mb-4">
+      <form id="editform" @submit.prevent="infoUpdate">
+        <div class="mb-3">
+          <label for="userNameForm" class="form-label">유저 이름</label>
+          <input @input="isChanged" v-model="formUserName" type="text" class="form-control" id="userNameForm" aria-describedby="userNameHelp" required>
+          <div id="userNameHelp" class="form-text">수정하면 유저 이름이 변경됩니다.</div>
+        </div>
+        <div class="mb-3">
+          <label for="passwordHelp" class="form-label">비밀번호</label>
+          <input @input="isChanged" v-model="formPassword" type="password" class="form-control" id="passwordHelp" aria-describedby="passwordHelp">
+          <div id="passwordHelp" class="form-text">8자 이상 입력하면 비밀번호가 변경됩니다.</div>
+        </div>
+        <div class="mb-3 form-check">
+          <input @change="isChanged" v-model="formDeleted" type="checkbox" class="form-check-input" id="userDelCheckBox">
+          <label class="form-check-label" for="userDelCheckBox">계정을 삭제하겠습니다.</label>
+        </div>
+        <div class="mb-3 d-flex">
+          <button type="submit" id="submitbtn" class="btn btn-primary" :disabled="canSubmit != true">수정</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="pt-4 my-md-5 pt-md-5 border-top">
+    <h6>안녕하세요, {{ userName }}. </h6>
+  </footer>
+</div>
+
+<%- include ('../general/script') %>
+<script src="/assets/file/userinfo.js"></script>
+<%- include ('../general/footer') %>

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpCode, Post, Res, UseGuards } from '@nestjs/common';
 import { LoginAuthDto } from './dto/login-auth.dto.js';
 import { Response } from 'express';
 import { SignGuard } from './guard/sign-guard.js';
@@ -16,6 +16,7 @@ export class SignController {
     ) {}
 
     @Post('/login')
+    @HttpCode(200)
     async login(@Res({ passthrough: true }) res: Response, @Body() dto: LoginAuthDto): Promise<{[name: string]: string}> {
         const { userId, password } = dto;
 
