@@ -11,10 +11,12 @@ import { AuthFactory } from './domain/auth.factory.js';
 import { TokenAdapter } from './infra/adapter/token.adapter.js';
 import { AuthEntity, AuthSchema } from './infra/db/entity/auth.entity.js';
 import { AuthRepository } from './infra/db/repository/auth.repository.js';
+import { DeleteAuthCommandHandler } from './application/command/delete-auth.handler.js';
 
 const commandHandlers = [
     CreateTokenCommandHandler,
-    UpdateAuthCommandHandler
+    UpdateAuthCommandHandler,
+    DeleteAuthCommandHandler
 ];
 
 const queryHandlers = [

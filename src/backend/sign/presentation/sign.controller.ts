@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, HttpCode, Post, Res, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Delete, HttpCode, Post, Res, UseGuards } from '@nestjs/common';
 import { LoginAuthDto } from './dto/login-auth.dto.js';
 import { Response } from 'express';
 import { SignGuard } from './guard/sign-guard.js';
@@ -8,6 +8,7 @@ import { LoginCommand } from '../application/command/login.command.js';
 import { CreateTokenCommand } from '../../auth/application/command/create-token.command.js';
 import { SignTokenGuard } from './guard/sign-token-guard.js';
 import { UserExisted } from '../../user/presentation/pipe/user-existed.pipe.js';
+import { DeleteAuthCommand } from '../../auth/application/command/delete-auth.command.js';
 
 @Controller('sign')
 export class SignController {
@@ -42,6 +43,13 @@ export class SignController {
         const command = new CreateTokenCommand(userId);
         const accessToken = await this.commandBus.execute(command);
         return {token: accessToken};
+    }
+
+    @UseGuards(SignGuard)
+    @Delete('/logout')
+    async logout(@Auth('userId', UserExisted) userId: string): Promise<void> {
+        const command = new DeleteAuthCommand(userId);
+        await this.commandBus.execute(command);
     }
 
     @UseGuards(SignTokenGuard)
